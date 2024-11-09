@@ -117,8 +117,8 @@
     ],
     "telegram": {
         "enabled": false,
-        "token": "7350340786:AAHMRvtt0YR4ueEBa4t48WSzKM6R9xCMq7Y",
-        "chat_id": "1019347538",
+        "token": "",
+        "chat_id": "",
         "keyboard": [
           ["/daily", "/stats", "/balance", "/profit"],
           ["/status table", "/performance"],
@@ -156,11 +156,11 @@
     "api_server": {
         "enabled": true,
         "listen_ip_address": "127.0.0.1",
-        "listen_port": 8889,
+        "listen_port": 8888,
         "verbosity": "error",
         "enable_openapi": false,
-        "jwt_secret_key": "f5a6f79c25163fb9b6620523bf2883d3efaad415544f300831527a12b054c171",
-        "ws_token": "vXy0pB5XWk3v8dc3Vp5H4Hgl_bjSpOCGGA",
+        "jwt_secret_key": "",
+        "ws_token": "",
         "CORS_origins": [],
         "username": "freqtrader",
         "password": "freqtrader"
