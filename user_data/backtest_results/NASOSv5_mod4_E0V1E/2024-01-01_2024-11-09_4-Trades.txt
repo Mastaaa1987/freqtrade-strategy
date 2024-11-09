@@ -1,3 +1,4 @@
+freqtrade backtesting -c user_data/configs/webserver_config.json -s NASOSv5_mod4_E0V1E --timerange=20240101- --enable-protections
 Result for strategy NASOSv5_mod4_E0V1E
                                                  BACKTESTING REPORT
 ┏━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
