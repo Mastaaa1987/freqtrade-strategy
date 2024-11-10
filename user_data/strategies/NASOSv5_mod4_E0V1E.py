@@ -67,12 +67,12 @@ class NASOSv5_mod4_E0V1E(IStrategy):
     # ROI table:  # value loaded from strategy
     minimal_roi = {
         "0": 0.4,
-        "360": -0.05, # Added by Mastaaa
-        "720": -1 # Added by Mastaaa
+        "180": -0.05, # Added by Mastaaa
+        "360": -1 # Added by Mastaaa
     }
 
     # Stoploss:
-    stoploss = -0.1  # edit by Mastaaa, Original -0.3
+    stoploss = -0.2  # edit by Mastaaa, Original -0.3
 
     # Trailing stop:
     trailing_stop = True  # value loaded from strategy
@@ -410,7 +410,6 @@ class NASOSv5_mod4_E0V1E(IStrategy):
             ),
             ['enter_long', 'enter_tag']] = (1, 'buy_1')
 
-        """
         dataframe.loc[
             (
                 (dataframe['rsi_slow_1'] < dataframe['rsi_slow_1'].shift(1)) &
@@ -420,35 +419,24 @@ class NASOSv5_mod4_E0V1E(IStrategy):
                 (dataframe['cti'] < self.buy_cti_32.value)
             ),
             ['enter_long', 'enter_tag']] = (1, 'buy_new')
-        """
 
         return dataframe
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        conditions = []
-
-        conditions.append(
-            ((dataframe['close'] > dataframe['sma_9']) &
+        dataframe.loc[(
+                (dataframe['close'] > dataframe['sma_9']) &
                 (dataframe['close'] > (dataframe['ma_sell'] * self.high_offset_2.value)) &
                 (dataframe['rsi'] > 50) &
                 (dataframe['volume'] > 0) &
                 (dataframe['rsi_fast'] > dataframe['rsi_slow'])
-            )
-            |
-            (
+            ), ['exit_long', 'exit_tag']] = (1, 'exit_signal_1')
+
+        dataframe.loc[(
                 (dataframe['close'] < dataframe['hma_50']) &
                 (dataframe['close'] > (dataframe['ma_sell'] * self.high_offset.value)) &
                 (dataframe['volume'] > 0) &
                 (dataframe['rsi_fast'] > dataframe['rsi_slow'])
-            )
-
-        )
-
-        if conditions:
-            dataframe.loc[
-                reduce(lambda x, y: x | y, conditions),
-                'exit_long'
-            ]=1
+            ), ['exit_long', 'exit_tag']] = (1, 'exit_signal_2')
 
         return dataframe
 
