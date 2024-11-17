@@ -31,11 +31,6 @@ class E0V1E(IStrategy):
         'stoploss_on_exchange_interval': 60,
         'stoploss_on_exchange_market_ratio': 0.99
     }
-    slippage_protection = {
-        'retries': 3,
-        'max_slippage': -0.02
-    }
-    # current_candle = {}
 
     stoploss = -0.25
     trailing_stop = False
@@ -86,10 +81,7 @@ class E0V1E(IStrategy):
         return None
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         # buy_1 indicators
-        buy_sma15_32 = 2 - self.buy_sma15_32.value
         dataframe['sma_15'] = ta.SMA(dataframe, timeperiod=15)
-        dataframe['sma_15_a'] = dataframe['sma_15'] * buy_sma15_32
-        dataframe['sma_15_b'] = dataframe['sma_15'] * self.buy_sma15_32.value
         dataframe['cti'] = pta.cti(dataframe["close"], length=20)
         dataframe['rsi'] = ta.RSI(dataframe, timeperiod=14)
         dataframe['rsi_fast'] = ta.RSI(dataframe, timeperiod=4)
@@ -147,25 +139,15 @@ class E0V1E(IStrategy):
         current_candle = dataframe.iloc[-1].squeeze()
 
         min_profit = trade.calc_profit_ratio(trade.min_rate)
-        # slippage = (current_rate / current_candle['close']) - 1
-        #
-        # try:
-        #     state = self.current_candle['__pairs']
-        # except KeyError:
-        #     state = self.current_candle['__pairs'] = {}
-        #
-        # pair_retries = state.get(pair, 0)
-        # if pair_retries < self.slippage_protection['retries']:
-        #     state[pair] = pair_retries + 1
-        # else:
-        #     state[pair] = 0
-        #
-        # print(slippage, current_rate, state)
+
+        # my add
         if trade.id not in TMP_HOLD:
+            # looking for candle on opened the trade ... If the bot disconneted in trade, it protreced the Trade if is in TMP_HOLD @ trade start ...
             if len(dataframe.loc[dataframe['date'] < trade.open_date_utc]) > 0:
                 open_candle = dataframe.loc[dataframe['date'] < trade.open_date_utc].iloc[-1].squeeze()
                 if open_candle['close'] > open_candle["ma120"] and open_candle['close'] > open_candle["ma240"]:
                     TMP_HOLD.append(trade.id)
+            # if open_candle not in dataframe history execute the original command ...
             elif current_candle['close'] > current_candle["ma120"] and current_candle['close'] > current_candle["ma240"]:
                 TMP_HOLD.append(trade.id)
 
