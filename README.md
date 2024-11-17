@@ -14,7 +14,7 @@ FakeoutStrategy schaut in die Zukunft was im Live Mode niemals funktionieren wir
 
 ![LiveTrade Result](https://raw.githubusercontent.com/Mastaaa1987/freqtrade-strategy/refs/heads/main/user_data/E0V1E_LiveRun_and_backtest_results-2024-11-14_2024-11-16.png)
 
-Information:
+### Background Infos:
 
 Der PROS/USDT & VITE/USDT Trade auf der RealLive Seite sind falsche Trades gewesen weil ich dummy mal wieder im Prozess rum werckeln musste was zu abweichungen und verlusten geführt hat ...
 
