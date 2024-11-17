@@ -52,6 +52,32 @@ class E0V1E(IStrategy):
     sell_loss_cci = IntParameter(low=0, high=600, default=120, space='sell', optimize=cci_opt)
     sell_loss_cci_profit = DecimalParameter(-0.15, 0, default=-0.05, decimals=2, space='sell', optimize=cci_opt)
 
+    # my plot add ...
+    plot_config = {
+        'main_plot': {
+            'ma120': {'color': '#c85656'},
+            'ma240': {'color': '#c5950e'},
+            'sma_15': {'color': '#4f91ac'}
+        },
+        'subplots': {
+            'rsi': {
+                'rsi': {'color': '#38e25a'},
+                'rsi_fast': {'color': '#90eed2'},
+                'rsi_slow': {'color': '#eb4760'}
+            },
+            'cti': {
+                'cti': {'color': '#75fc40'}
+            },
+            'cci': {
+                'cci': {'color': '#54e5f8'}
+            },
+            'conds': {
+                'change': {'color': '#bcb622'},
+                'fastk': {'color': '#e830dc'}
+            },
+        }
+    }
+
     @property
     def protections(self):
 
@@ -96,7 +122,7 @@ class E0V1E(IStrategy):
         dataframe['ma120'] = ta.MA(dataframe, timeperiod=120)
         dataframe['ma240'] = ta.MA(dataframe, timeperiod=240)
 
-        # my add
+        # my add, only for plot the % change of the candle ...
         dataframe['change'] = (100 / dataframe['open'] * dataframe['close'] - 100)
 
         return dataframe
